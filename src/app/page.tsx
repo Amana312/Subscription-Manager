@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Layers, Users, Receipt, FileText, RefreshCw } from 'lucide-react';
+import { ArrowRight, Layers, Users, Receipt, FileText } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -35,16 +35,13 @@ export default function HomePage() {
           <Link href="/plans" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
             <span>Task 3: Plans Engine</span><ArrowRight className="w-3.5 h-3.5 text-sage-400" />
           </Link>
-          <Link href="/subscriptions" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
-            <span>Task: Subscriptions</span><ArrowRight className="w-3.5 h-3.5 text-sage-400" />
-          </Link>
-          <Link href="/quotations" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
+<Link href="/quotations" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
             <span>Task 4: Quotations</span><ArrowRight className="w-3.5 h-3.5 text-sage-400" />
           </Link>
         </div>
 
         {/* Feature Overview Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-8 text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-8 text-left">
           <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
             <Users className="w-5 h-5 text-sage-600 mb-2.5" />
             <h3 className="font-bold text-sage-900 text-xs">Role-Based Access</h3>
@@ -60,12 +57,7 @@ export default function HomePage() {
             <h3 className="font-bold text-sage-900 text-xs">Recurring Plans</h3>
             <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Daily, Weekly, Monthly, and Yearly cycles with pause and auto-close rules.</p>
           </div>
-          <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
-            <RefreshCw className="w-5 h-5 text-sage-600 mb-2.5" />
-            <h3 className="font-bold text-sage-900 text-xs">Subscription Management</h3>
-            <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Create and track subscriptions, billing cycles, renewals, pauses and closures.</p>
-          </div>
-          <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
+<div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
             <FileText className="w-5 h-5 text-sage-600 mb-2.5" />
             <h3 className="font-bold text-sage-900 text-xs">Quotation Management</h3>
             <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Create, search, and track customer quotations with automatic tax and validity.</p>
