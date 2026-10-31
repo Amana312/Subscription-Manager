@@ -48,6 +48,13 @@ export default function HomePage() {
             <span>Task 3: Plans Engine</span>
             <ArrowRight className="w-3.5 h-3.5 text-sage-400" />
           </Link>
+          <Link
+            href="/subscriptions"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-sage-700 hover:bg-sage-900 text-white text-xs font-bold shadow-sm transition-all space-x-1.5"
+          >
+            <span>Task 5: Subscriptions</span>
+            <ArrowRight className="w-3.5 h-3.5 text-sage-200" />
+          </Link>
         </div>
 
         {/* Feature Overview Cards */}
