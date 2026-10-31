@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id         Int       @id @default(autoincrement())
+  name       String
+  type       String
+  salesPrice Float
+  costPrice  Float
+  notes      String?
+  variants   Variant[]
+}
+
+model Variant {
+  id         Int     @id @default(autoincrement())
+  attribute  String
+  value      String
+  extraPrice Float   @default(0)
+  productId  Int
+  product    Product @relation(fields: [productId], references: [id])
+}
+
+model Plan {
+  id            Int       @id @default(autoincrement())
+  name          String
+  price         Float
+  billingPeriod String
+  minQuantity   Int       @default(1)
+  startDate     DateTime
+  endDate       DateTime?
+  autoClose     Boolean   @default(false)
+  pausable      Boolean   @default(false)
+  renewable     Boolean   @default(false)
+}
