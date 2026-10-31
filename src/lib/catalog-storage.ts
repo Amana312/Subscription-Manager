@@ -5,77 +5,245 @@ import { Product, ProductVariant, ProductType } from './catalog-types';
 const DATA_DIR = path.join(process.cwd(), '.data');
 const CATALOG_FILE = path.join(DATA_DIR, 'catalog.json');
 
-function initCatalogStorage() {
+const DEFAULT_PRODUCTS: Product[] = [
+  {
+    id: 'prod_brightloop_erp',
+    sku: 'BL-ERP-01',
+    name: 'Brightloop Business Suite',
+    type: 'Software License',
+    category: 'Core Software',
+    salesPrice: 1200,
+    costPrice: 400,
+    targetAudience: 'Mid-to-Large Enterprises',
+    notes: 'All-in-one business software running accounting, inventory, subscriptions, and customer management.',
+    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+    features: ['General Ledger & Invoicing', 'Subscription State Tracking', 'Multi-Currency Support', 'Automated Recurring Runs'],
+    variants: [
+      {
+        id: 'var_odoo_brand',
+        productId: 'prod_brightloop_erp',
+        attributeName: 'Brand',
+        attributeValue: 'Odoo Edition',
+        priceModifier: 560, // Prompt requirement: choosing Odoo brand adds 560 to price
+      },
+      {
+        id: 'var_standard_brand',
+        productId: 'prod_brightloop_erp',
+        attributeName: 'Brand',
+        attributeValue: 'Brightloop Standard',
+        priceModifier: 0,
+      },
+      {
+        id: 'var_enterprise_edition',
+        productId: 'prod_brightloop_erp',
+        attributeName: 'Edition',
+        attributeValue: 'Enterprise Cloud Pro',
+        priceModifier: 380,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod_retail_pos',
+    sku: 'BL-POS-02',
+    name: 'Brightloop POS & Retail Register',
+    type: 'Software License',
+    category: 'Retail & Sales',
+    salesPrice: 450,
+    costPrice: 120,
+    targetAudience: 'Small Shops & Boutiques',
+    notes: 'High-speed cloud point-of-sale system with barcode scanning, offline mode, and receipt sync.',
+    imageUrl: 'https://images.unsplash.com/photo-1556742049-0a67e5572240?auto=format&fit=crop&w=600&q=80',
+    features: ['Instant Barcode Checkout', 'Offline Transaction Sync', 'Thermal Receipt Printing', 'Shift Cash Reconciliation'],
+    variants: [
+      {
+        id: 'var_pos_odoo',
+        productId: 'prod_retail_pos',
+        attributeName: 'Brand',
+        attributeValue: 'Odoo POS Certified',
+        priceModifier: 240,
+      },
+      {
+        id: 'var_pos_standard',
+        productId: 'prod_retail_pos',
+        attributeName: 'Brand',
+        attributeValue: 'Standalone Standard',
+        priceModifier: 0,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod_cloud_storage',
+    sku: 'BL-STO-03',
+    name: 'Encrypted Cloud Storage & Backup Vault',
+    type: 'Cloud Add-on',
+    category: 'Infrastructure',
+    salesPrice: 150,
+    costPrice: 35,
+    targetAudience: 'All Business Sizes',
+    notes: 'Daily automated database snapshots, document vault, and encrypted object storage.',
+    imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80',
+    features: ['Daily Automated Backups', 'AES-256 Cloud Encryption', '1-Click Point-in-time Restore', '99.99% Availability SLA'],
+    variants: [
+      {
+        id: 'var_storage_2tb',
+        productId: 'prod_cloud_storage',
+        attributeName: 'Capacity',
+        attributeValue: '2 TB High-Speed SSD',
+        priceModifier: 90,
+      },
+      {
+        id: 'var_storage_5tb',
+        productId: 'prod_cloud_storage',
+        attributeName: 'Capacity',
+        attributeValue: '5 TB Enterprise Vault',
+        priceModifier: 220,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod_ai_billing',
+    sku: 'BL-AI-04',
+    name: 'AI Revenue & Churn Predictor',
+    type: 'Cloud Add-on',
+    category: 'Intelligence',
+    salesPrice: 280,
+    costPrice: 60,
+    targetAudience: 'Finance Leads & CFOs',
+    notes: 'Smart machine learning copilot that forecasts monthly renewals, detects churn risks, and catches billing anomalies.',
+    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+    features: ['Renewal Churn Warning Alerts', 'Automated Anomaly Detection', 'MRR Growth Forecast Modeling', 'Overdue Risk Scoring'],
+    variants: [
+      {
+        id: 'var_ai_advanced',
+        productId: 'prod_ai_billing',
+        attributeName: 'Model Engine',
+        attributeValue: 'Advanced Neural Engine',
+        priceModifier: 150,
+      },
+      {
+        id: 'var_ai_standard',
+        productId: 'prod_ai_billing',
+        attributeName: 'Model Engine',
+        attributeValue: 'Standard Statistical',
+        priceModifier: 0,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod_user_seat',
+    sku: 'BL-SET-05',
+    name: 'Additional Team Member Seat',
+    type: 'User Seat',
+    category: 'Licensing',
+    salesPrice: 45,
+    costPrice: 8,
+    targetAudience: 'Growing Organizations',
+    notes: 'Per-seat recurring subscription with granular role-based permissions and audit activity logs.',
+    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80',
+    features: ['Dedicated User Login', 'Role-Based Access Control', 'Activity & Change Logging', 'Mobile Web App Access'],
+    variants: [
+      {
+        id: 'var_seat_power',
+        productId: 'prod_user_seat',
+        attributeName: 'Privilege',
+        attributeValue: 'Power User (Admin/API)',
+        priceModifier: 25,
+      },
+      {
+        id: 'var_seat_auditor',
+        productId: 'prod_user_seat',
+        attributeName: 'Privilege',
+        attributeValue: 'Standard Staff',
+        priceModifier: 0,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod_priority_sla',
+    sku: 'BL-SRV-06',
+    name: 'Dedicated Enterprise SLA & Account Manager',
+    type: 'Professional Service',
+    category: 'Support',
+    salesPrice: 650,
+    costPrice: 200,
+    targetAudience: 'Mission-Critical Operations',
+    notes: 'Direct 24/7 technical escalation channel with 1-hour response SLA and a dedicated Brightloop solutions engineer.',
+    imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
+    features: ['1-Hour Response Guarantee', 'Direct Slack/Phone Channel', 'Monthly Architecture Review', 'Priority Hotfix Deployment'],
+    variants: [
+      {
+        id: 'var_sla_247',
+        productId: 'prod_priority_sla',
+        attributeName: 'Tier',
+        attributeValue: '24/7 Platinum Escalation',
+        priceModifier: 350,
+      },
+      {
+        id: 'var_sla_business',
+        productId: 'prod_priority_sla',
+        attributeName: 'Tier',
+        attributeValue: 'Business Hours Gold',
+        priceModifier: 0,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'prod_tax_compliance',
+    sku: 'BL-TAX-07',
+    name: 'Automated Tax & Global Fiscal Pack',
+    type: 'Cloud Add-on',
+    category: 'Compliance',
+    salesPrice: 190,
+    costPrice: 40,
+    targetAudience: 'International Merchants',
+    notes: 'Automatic tax rates calculation across VAT, GST, and US State Sales Tax with e-invoicing compliance.',
+    imageUrl: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=600&q=80',
+    features: ['Real-time Tax Engine Rules', '120+ Countries VAT/GST', 'E-Invoice Validation XML', 'Quarterly Tax Summary Export'],
+    variants: [
+      {
+        id: 'var_tax_global',
+        productId: 'prod_tax_compliance',
+        attributeName: 'Coverage',
+        attributeValue: 'Global Multi-Region',
+        priceModifier: 110,
+      },
+      {
+        id: 'var_tax_single',
+        productId: 'prod_tax_compliance',
+        attributeName: 'Coverage',
+        attributeValue: 'Single Jurisdiction',
+        priceModifier: 0,
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  },
+];
+
+function initCatalogStorage(forceReset = false) {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
-  if (!fs.existsSync(CATALOG_FILE)) {
-    // Pre-seed with Brightloop products including the +560 Odoo brand variant
-    const defaultProducts: Product[] = [
-      {
-        id: 'prod_brightloop_erp',
-        name: 'Brightloop Business Suite',
-        type: 'Software License',
-        salesPrice: 1200,
-        costPrice: 400,
-        notes: 'Core business management system for small to large enterprises.',
-        variants: [
-          {
-            id: 'var_odoo_brand',
-            productId: 'prod_brightloop_erp',
-            attributeName: 'Brand',
-            attributeValue: 'Odoo Edition',
-            priceModifier: 560, // The exact prompt requirement (+560 to price)
-          },
-          {
-            id: 'var_standard_brand',
-            productId: 'prod_brightloop_erp',
-            attributeName: 'Brand',
-            attributeValue: 'Standard Edition',
-            priceModifier: 0,
-          },
-        ],
-        createdAt: new Date().toISOString(),
-      },
-      {
-        id: 'prod_cloud_storage',
-        name: 'Dedicated Cloud Storage Add-on',
-        type: 'Cloud Add-on',
-        salesPrice: 150,
-        costPrice: 35,
-        notes: 'Secure cloud backup and storage block billed on recurring cycle.',
-        variants: [
-          {
-            id: 'var_storage_2tb',
-            productId: 'prod_cloud_storage',
-            attributeName: 'Capacity',
-            attributeValue: '2 TB High-Speed',
-            priceModifier: 90,
-          },
-        ],
-        createdAt: new Date().toISOString(),
-      },
-      {
-        id: 'prod_user_seat',
-        name: 'Additional Team Member Seat',
-        type: 'User Seat',
-        salesPrice: 45,
-        costPrice: 8,
-        notes: 'Per-user recurring seat for staff or manager accounts.',
-        variants: [
-          {
-            id: 'var_seat_power',
-            productId: 'prod_user_seat',
-            attributeName: 'Privilege',
-            attributeValue: 'Power User (API Access)',
-            priceModifier: 20,
-          },
-        ],
-        createdAt: new Date().toISOString(),
-      },
-    ];
 
-    fs.writeFileSync(CATALOG_FILE, JSON.stringify(defaultProducts, null, 2), 'utf-8');
+  // If forceReset or file missing or file has old small data, populate rich catalog
+  if (!fs.existsSync(CATALOG_FILE) || forceReset) {
+    fs.writeFileSync(CATALOG_FILE, JSON.stringify(DEFAULT_PRODUCTS, null, 2), 'utf-8');
+    return;
+  }
+
+  try {
+    const raw = fs.readFileSync(CATALOG_FILE, 'utf-8');
+    const existing = JSON.parse(raw);
+    if (!Array.isArray(existing) || existing.length < 5 || !existing[0].imageUrl) {
+      fs.writeFileSync(CATALOG_FILE, JSON.stringify(DEFAULT_PRODUCTS, null, 2), 'utf-8');
+    }
+  } catch {
+    fs.writeFileSync(CATALOG_FILE, JSON.stringify(DEFAULT_PRODUCTS, null, 2), 'utf-8');
   }
 }
 
@@ -85,7 +253,7 @@ export function getAllProducts(): Product[] {
     const raw = fs.readFileSync(CATALOG_FILE, 'utf-8');
     return JSON.parse(raw) as Product[];
   } catch {
-    return [];
+    return DEFAULT_PRODUCTS;
   }
 }
 
@@ -105,15 +273,25 @@ export function createProduct(data: {
   salesPrice: number;
   costPrice: number;
   notes?: string;
+  sku?: string;
+  targetAudience?: string;
+  imageUrl?: string;
+  features?: string[];
 }): Product {
   const products = getAllProducts();
+  const skuNumber = Math.floor(10 + Math.random() * 90);
   const newProduct: Product = {
     id: 'prod_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+    sku: data.sku || `BL-CUS-${skuNumber}`,
     name: data.name.trim(),
     type: data.type,
+    category: data.type,
     salesPrice: Number(data.salesPrice) || 0,
     costPrice: Number(data.costPrice) || 0,
-    notes: data.notes?.trim() || '',
+    targetAudience: data.targetAudience || 'General Business',
+    notes: data.notes?.trim() || 'Custom recurring product.',
+    imageUrl: data.imageUrl || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80',
+    features: data.features && data.features.length > 0 ? data.features : ['Standard Subscription Feature', 'Recurring License Support'],
     variants: [],
     createdAt: new Date().toISOString(),
   };

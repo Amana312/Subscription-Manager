@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Brightloop - Subscription & Recurring Billing',
-  description: 'Unified software platform to run plans, subscriptions, and recurring billing.',
+  title: 'SubSage • Powered by Brightloop',
+  description: 'SubSage - Unified Subscription, Invoicing & Recurring Billing Platform, powered by Brightloop.',
 };
 
 export default function RootLayout({

@@ -213,15 +213,21 @@ export default function AccountsPage() {
         
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-900 text-white mb-3 shadow-sm">
+          <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-900 text-white mb-2.5 shadow-sm">
             <Sparkles className="w-5 h-5 text-indigo-400" />
           </div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Brightloop</h1>
-          <p className="text-xs text-slate-500 mt-1">Unified Subscription & Recurring Billing</p>
+          <div>
+            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-500 font-medium border border-slate-200/80 mb-1.5">
+              <span>powered by</span>
+              <span className="font-semibold text-slate-800">Brightloop</span>
+            </span>
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">SubSage</h1>
+            <p className="text-xs text-slate-500 mt-0.5">Task 1 • Authentication & Role Management</p>
+          </div>
           <div className="flex justify-center space-x-3 mt-3 text-xs">
             <Link href="/" className="text-slate-400 hover:text-slate-700">Home</Link>
             <span className="text-slate-300">•</span>
-            <Link href="/catalog" className="text-slate-700 font-medium hover:text-slate-900">Products & Catalog →</Link>
+            <Link href="/catalog" className="text-slate-700 font-medium hover:text-slate-900">Task 2: Catalog & Variants →</Link>
           </div>
         </div>
 
