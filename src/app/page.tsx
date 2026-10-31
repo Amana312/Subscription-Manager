@@ -1,51 +1,54 @@
 import Link from 'next/link';
-import { Shield, ArrowRight, Users, Layers, Receipt } from 'lucide-react';
+import { ArrowRight, Sparkles, Layers, Users, Receipt } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center px-4">
-      <div className="max-w-2xl w-full text-center space-y-6">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#714B67] text-white shadow-xl">
-          <Shield className="w-9 h-9" />
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center px-4 py-16">
+      <div className="max-w-xl w-full text-center space-y-6">
+        
+        {/* Brand Icon */}
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-900 text-white shadow-sm mb-1">
+          <Sparkles className="w-5 h-5 text-indigo-400" />
         </div>
 
-        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+        <h1 className="text-3xl sm:text-4xl font-semibold text-slate-900 tracking-tight">
           Brightloop Software
         </h1>
-        <p className="text-lg text-slate-600 max-w-xl mx-auto">
-          Unified Subscription Management, Automated Recurring Billing, and Customer Portal.
+        <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
+          Unified platform to run pricing plans, recurring subscriptions, automated invoicing, and customer billing.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+        <div className="pt-2">
           <Link
             href="/accounts"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#714B67] hover:bg-[#5b3c53] text-white font-semibold shadow-lg transition-all space-x-2"
+            className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium shadow-sm transition-all space-x-2"
           >
-            <span>Launch Accounts & Auth Portal</span>
-            <ArrowRight className="w-5 h-5" />
+            <span>Launch Authentication Portal</span>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
           </Link>
         </div>
 
-        {/* Feature summary cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 text-left">
-          <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-            <Users className="w-6 h-6 text-[#714B67] mb-2" />
-            <h3 className="font-bold text-slate-800 text-sm">Role-Based Access</h3>
-            <p className="text-xs text-slate-500 mt-1">Admin, Staff & Customer Portal with strict permission boundaries.</p>
+        {/* Feature Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-8 text-left">
+          <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
+            <Users className="w-4 h-4 text-slate-700 mb-2.5" />
+            <h3 className="font-semibold text-slate-900 text-xs">Role-Based Access</h3>
+            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Dedicated permission controls for Admins, Staff, and Client portals.</p>
           </div>
 
-          <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-            <Layers className="w-6 h-6 text-[#017E84] mb-2" />
-            <h3 className="font-bold text-slate-800 text-sm">Plans & Subscriptions</h3>
-            <p className="text-xs text-slate-500 mt-1">Lifecycle from Draft to Quotation, Confirmed, Active, and Closed.</p>
+          <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
+            <Layers className="w-4 h-4 text-slate-700 mb-2.5" />
+            <h3 className="font-semibold text-slate-900 text-xs">Lifecycle Engine</h3>
+            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">State transitions from Quotation to Confirmed, Active, and Renewal.</p>
           </div>
 
-          <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-            <Receipt className="w-6 h-6 text-amber-600 mb-2" />
-            <h3 className="font-bold text-slate-800 text-sm">Automated Billing</h3>
-            <p className="text-xs text-slate-500 mt-1">Idempotent recurring billing engine, taxes, and instant MRR analytics.</p>
+          <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
+            <Receipt className="w-4 h-4 text-slate-700 mb-2.5" />
+            <h3 className="font-semibold text-slate-900 text-xs">Automated Billing</h3>
+            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Idempotent recurring billing runs with automatic tax and discount calculations.</p>
           </div>
         </div>
+
       </div>
     </div>
   );

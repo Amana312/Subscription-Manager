@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Shield, CheckCircle2, XCircle, ArrowRight, KeyRound, Mail, User, Lock, AlertCircle } from 'lucide-react';
+import { Check, X, ArrowRight, Mail, Lock, User, KeyRound, Sparkles, LogOut, CheckCircle2 } from 'lucide-react';
 
 export default function AccountsPage() {
   const [tab, setTab] = useState<'register' | 'login' | 'forgot' | 'reset'>('register');
@@ -48,28 +48,28 @@ export default function AccountsPage() {
   const passHasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(regPassword);
   const isPasswordValid = passMoreThanEight && passHasUpper && passHasLower && passHasSpecial;
 
-  // New password validation checks (for reset)
+  const validCount = [passMoreThanEight, passHasUpper, passHasLower, passHasSpecial].filter(Boolean).length;
+
+  // Reset password checks
   const resetMoreThanEight = newPassword.length > 8;
   const resetHasUpper = /[A-Z]/.test(newPassword);
   const resetHasLower = /[a-z]/.test(newPassword);
   const resetHasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(newPassword);
   const isResetPasswordValid = resetMoreThanEight && resetHasUpper && resetHasLower && resetHasSpecial;
 
-  // Clear notices on tab change
   const handleTabChange = (newTab: 'register' | 'login' | 'forgot' | 'reset') => {
     setTab(newTab);
     setErrorMessage(null);
     setSuccessMessage(null);
   };
 
-  // 1. Handle Registration (AC1, AC2, AC3)
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
 
     if (!isPasswordValid) {
-      setErrorMessage('Please satisfy all password criteria (more than 8 chars, uppercase, lowercase, special char).');
+      setErrorMessage('Please satisfy all password security requirements.');
       return;
     }
 
@@ -90,7 +90,7 @@ export default function AccountsPage() {
       if (!res.ok) {
         setErrorMessage(data.error || 'Registration failed');
       } else {
-        setSuccessMessage(`Success! Account created for ${data.user.email} (${data.user.role}). You can now log in.`);
+        setSuccessMessage(`Account created successfully for ${data.user.email}.`);
         setFullName('');
         setRegEmail('');
         setRegPassword('');
@@ -103,7 +103,6 @@ export default function AccountsPage() {
     }
   };
 
-  // 2. Handle Login (AC4, AC5)
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -125,7 +124,7 @@ export default function AccountsPage() {
         setErrorMessage(data.error || 'Invalid credentials');
       } else {
         setLoggedInUser(data.user);
-        setSuccessMessage(`Logged in successfully as ${data.user.fullName} [${data.user.role}].`);
+        setSuccessMessage(`Welcome back, ${data.user.fullName}`);
       }
     } catch (err: any) {
       setErrorMessage('Network error during login.');
@@ -134,7 +133,6 @@ export default function AccountsPage() {
     }
   };
 
-  // 3. Handle Forgot Password
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -150,7 +148,7 @@ export default function AccountsPage() {
 
       const data = await res.json();
       if (!res.ok) {
-        setErrorMessage(data.error || 'Failed to request reset');
+        setErrorMessage(data.error || 'Failed to process request');
       } else {
         setSuccessMessage(data.message);
         if (data.simulatedLink) {
@@ -165,14 +163,13 @@ export default function AccountsPage() {
     }
   };
 
-  // 4. Handle Reset Password
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
 
     if (!isResetPasswordValid) {
-      setErrorMessage('New password must be > 8 characters with upper, lower, and special character.');
+      setErrorMessage('Password must be more than 8 characters and contain uppercase, lowercase, and a special character.');
       return;
     }
 
@@ -191,7 +188,7 @@ export default function AccountsPage() {
       if (!res.ok) {
         setErrorMessage(data.error || 'Password reset failed');
       } else {
-        setSuccessMessage('Password reset successfully! Please sign in with your new password.');
+        setSuccessMessage('Password updated. Please log in with your new credentials.');
         setSimulatedEmailLink(null);
         setNewPassword('');
         setTab('login');
@@ -203,7 +200,6 @@ export default function AccountsPage() {
     }
   };
 
-  // Quick fill helper for presentation speed
   const fillCredentials = (email: string, pass: string) => {
     setLoginEmail(email);
     setLoginPassword(pass);
@@ -211,252 +207,228 @@ export default function AccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-purple-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#714B67] text-white shadow-lg mb-3">
-          <Shield className="w-8 h-8" />
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-12 px-4 sm:px-6">
+      <div className="w-full max-w-[460px]">
+        
+        {/* Brand Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-900 text-white mb-3 shadow-sm">
+            <Sparkles className="w-5 h-5 text-indigo-400" />
+          </div>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Brightloop</h1>
+          <p className="text-sm text-slate-500 mt-1">Unified Subscription & Recurring Billing</p>
         </div>
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Brightloop Software</h1>
-        <p className="mt-1 text-sm font-medium text-slate-600">
-          Subscription Management Platform • Authentication & Access Control
-        </p>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
-        <div className="bg-white py-8 px-6 shadow-xl rounded-2xl border border-slate-200 sm:px-10">
+        {/* Card */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.05)] p-7 sm:p-9">
           
-          {/* Tabs */}
-          <div className="flex border-b border-slate-200 mb-6 space-x-4">
+          {/* Minimalist Segmented Tabs */}
+          <div className="flex bg-slate-100 p-1 rounded-xl mb-6">
             <button
               onClick={() => handleTabChange('register')}
-              className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${
+              className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-all ${
                 tab === 'register'
-                  ? 'border-[#714B67] text-[#714B67]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              Create Account
+              Sign Up
             </button>
             <button
               onClick={() => handleTabChange('login')}
-              className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${
+              className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-all ${
                 tab === 'login'
-                  ? 'border-[#714B67] text-[#714B67]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
               Sign In
             </button>
             <button
               onClick={() => handleTabChange('forgot')}
-              className={`pb-3 text-sm font-semibold border-b-2 transition-colors ${
+              className={`flex-1 py-1.5 text-xs font-medium rounded-lg transition-all ${
                 tab === 'forgot' || tab === 'reset'
-                  ? 'border-[#714B67] text-[#714B67]'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              Forgot Password
+              Recovery
             </button>
           </div>
 
-          {/* Alert Banners */}
+          {/* Feedback Messages */}
           {errorMessage && (
-            <div className="mb-5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-start space-x-2">
-              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-red-600" />
+            <div className="mb-5 p-3 rounded-xl bg-rose-50/80 border border-rose-200/60 text-rose-700 text-xs font-medium flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-600 flex-shrink-0" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           {successMessage && (
-            <div className="mb-5 p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-start space-x-2">
-              <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5 text-emerald-600" />
+            <div className="mb-5 p-3 rounded-xl bg-emerald-50/80 border border-emerald-200/60 text-emerald-800 text-xs font-medium flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 flex-shrink-0" />
               <span>{successMessage}</span>
             </div>
           )}
 
-          {/* TAB 1: REGISTRATION (FR1, FR2, FR3, AC1, AC2, AC3) */}
+          {/* 1. SIGN UP */}
           {tab === 'register' && (
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
-                  Full Name (FR1)
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                  Full Name
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <User className="h-4 w-4" />
-                  </div>
+                <div className="relative">
+                  <User className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. John Doe / Apex Retail"
-                    className="block w-full pl-10 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] focus:border-transparent outline-none"
+                    placeholder="Jane Doe"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
-                  Email Address (FR1, FR2 - Unique)
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                  Email Address
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <Mail className="h-4 w-4" />
-                  </div>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
                   <input
                     type="email"
                     required
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
                     placeholder="name@company.com"
-                    className="block w-full pl-10 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] focus:border-transparent outline-none"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                   />
                 </div>
-                <p className="mt-1 text-xs text-slate-500">Each email can belong to only one account.</p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
-                  Password (FR3 - Strict Policy)
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                  Password
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="h-4 w-4" />
-                  </div>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
                   <input
                     type="password"
                     required
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="block w-full pl-10 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] focus:border-transparent outline-none"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                   />
                 </div>
 
-                {/* Password Criteria Checklist */}
-                <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5">
-                  <p className="text-xs font-semibold text-slate-700 mb-1">Required Password Criteria:</p>
-                  
-                  <div className="flex items-center text-xs">
-                    {passMoreThanEight ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2 flex-shrink-0" />
-                    )}
-                    <span className={passMoreThanEight ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      More than 8 characters ({regPassword.length} characters entered)
-                    </span>
-                  </div>
+                {/* Minimalist Strength Meter */}
+                <div className="mt-2.5 flex space-x-1.5">
+                  {[1, 2, 3, 4].map((step) => (
+                    <div
+                      key={step}
+                      className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                        validCount >= step
+                          ? validCount === 4
+                            ? 'bg-emerald-500'
+                            : 'bg-amber-400'
+                          : 'bg-slate-100'
+                      }`}
+                    />
+                  ))}
+                </div>
 
-                  <div className="flex items-center text-xs">
-                    {passHasUpper ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2 flex-shrink-0" />
-                    )}
-                    <span className={passHasUpper ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      At least one uppercase letter (A-Z)
-                    </span>
+                {/* Criteria Indicators */}
+                <div className="mt-3 grid grid-cols-2 gap-2 p-3 bg-slate-50/80 rounded-xl border border-slate-100 text-[11px]">
+                  <div className={`flex items-center space-x-1.5 ${passMoreThanEight ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {passMoreThanEight ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>&gt; 8 characters</span>
                   </div>
-
-                  <div className="flex items-center text-xs">
-                    {passHasLower ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2 flex-shrink-0" />
-                    )}
-                    <span className={passHasLower ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      At least one lowercase letter (a-z)
-                    </span>
+                  <div className={`flex items-center space-x-1.5 ${passHasUpper ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {passHasUpper ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>Uppercase letter</span>
                   </div>
-
-                  <div className="flex items-center text-xs">
-                    {passHasSpecial ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2 flex-shrink-0" />
-                    )}
-                    <span className={passHasSpecial ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      At least one special character (!@#$%^&*)
-                    </span>
+                  <div className={`flex items-center space-x-1.5 ${passHasLower ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {passHasLower ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>Lowercase letter</span>
+                  </div>
+                  <div className={`flex items-center space-x-1.5 ${passHasSpecial ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {passHasSpecial ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>Special character</span>
                   </div>
                 </div>
               </div>
 
-              {/* Role Picker */}
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
-                  Account Role (FR7 / AC7)
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                  Account Role
                 </label>
                 <select
                   value={regRole}
                   onChange={(e: any) => setRegRole(e.target.value)}
-                  className="mt-1 block w-full py-2 px-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] outline-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-xl text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                 >
-                  <option value="CUSTOMER">Customer (Self-service Portal only)</option>
-                  <option value="STAFF">Staff (Sales & Quotations)</option>
-                  <option value="ADMIN">Admin (Full Control of System)</option>
+                  <option value="CUSTOMER">Customer (Client Portal)</option>
+                  <option value="STAFF">Staff (Sales & Management)</option>
+                  <option value="ADMIN">Administrator (Full Access)</option>
                 </select>
               </div>
 
               <button
                 type="submit"
                 disabled={loading || !isPasswordValid}
-                className="w-full mt-2 py-2.5 px-4 bg-[#714B67] hover:bg-[#5b3c53] text-white text-sm font-semibold rounded-lg shadow disabled:opacity-50 transition-colors flex items-center justify-center space-x-2"
+                className="w-full mt-2 py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-xl shadow-sm disabled:opacity-40 transition-all flex items-center justify-center space-x-2"
               >
                 <span>{loading ? 'Creating Account...' : 'Create Account'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-slate-400" />
               </button>
             </form>
           )}
 
-          {/* TAB 2: SIGN IN (FR4, FR5, AC4, AC5) */}
+          {/* 2. SIGN IN */}
           {tab === 'login' && (
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">
                   Email Address
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <Mail className="h-4 w-4" />
-                  </div>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
                   <input
                     type="email"
                     required
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    placeholder="name@brightloop.com"
-                    className="block w-full pl-10 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] outline-none"
+                    placeholder="name@company.com"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <div className="flex items-center justify-between">
-                  <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-medium text-slate-700">
                     Password
                   </label>
                   <button
                     type="button"
                     onClick={() => handleTabChange('forgot')}
-                    className="text-xs text-[#714B67] hover:underline font-medium"
+                    className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
                   >
-                    Forgot Password?
+                    Forgot password?
                   </button>
                 </div>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="h-4 w-4" />
-                  </div>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
                   <input
                     type="password"
                     required
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="block w-full pl-10 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] outline-none"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                   />
                 </div>
               </div>
@@ -464,59 +436,62 @@ export default function AccountsPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 px-4 bg-[#714B67] hover:bg-[#5b3c53] text-white text-sm font-semibold rounded-lg shadow transition-colors flex items-center justify-center space-x-2"
+                className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-xl shadow-sm transition-all flex items-center justify-center space-x-2"
               >
                 <span>{loading ? 'Authenticating...' : 'Sign In'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-slate-400" />
               </button>
 
-              {/* Quick-Fill Buttons for Demo */}
-              <div className="mt-6 pt-4 border-t border-slate-200">
-                <p className="text-xs font-semibold uppercase text-slate-500 mb-2">⚡ Quick-fill for Judges / Demo:</p>
+              {/* Minimal Demo Access Selector */}
+              <div className="mt-6 pt-5 border-t border-slate-100">
+                <span className="block text-[11px] uppercase tracking-wider font-semibold text-slate-400 mb-2.5 text-center">
+                  Quick Demo Access
+                </span>
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
                     onClick={() => fillCredentials('admin@brightloop.com', 'Admin@12345')}
-                    className="text-xs py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded border border-slate-300"
+                    className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium rounded-lg border border-slate-200/70 transition-all text-center"
                   >
-                    👑 Admin
+                    Admin
                   </button>
                   <button
                     type="button"
                     onClick={() => fillCredentials('staff@brightloop.com', 'Staff@12345')}
-                    className="text-xs py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded border border-slate-300"
+                    className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium rounded-lg border border-slate-200/70 transition-all text-center"
                   >
-                    💼 Staff
+                    Staff
                   </button>
                   <button
                     type="button"
                     onClick={() => fillCredentials('customer@brightloop.com', 'Customer@12345')}
-                    className="text-xs py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded border border-slate-300"
+                    className="py-1.5 px-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-xs font-medium rounded-lg border border-slate-200/70 transition-all text-center"
                   >
-                    🏢 Customer
+                    Customer
                   </button>
                 </div>
               </div>
 
-              {/* Logged in state banner */}
+              {/* Logged in state */}
               {loggedInUser && (
-                <div className="mt-4 p-4 rounded-xl bg-purple-50 border border-purple-200 text-sm">
+                <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-bold text-[#714B67]">Current Active Session:</p>
-                      <p className="text-slate-800">{loggedInUser.fullName} ({loggedInUser.email})</p>
-                      <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#714B67] text-white">
-                        Role: {loggedInUser.role}
+                      <p className="font-semibold text-slate-900">{loggedInUser.fullName}</p>
+                      <p className="text-slate-500">{loggedInUser.email}</p>
+                      <span className="inline-block mt-1.5 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-200 text-slate-800 uppercase tracking-wider">
+                        {loggedInUser.role}
                       </span>
                     </div>
                     <button
                       onClick={() => {
                         setLoggedInUser(null);
-                        setSuccessMessage('Logged out securely (FR6 / AC6).');
+                        setSuccessMessage('Logged out successfully.');
                       }}
-                      className="text-xs px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 font-semibold rounded-lg"
+                      className="inline-flex items-center space-x-1 px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 font-medium rounded-lg border border-slate-200 transition-colors"
                     >
-                      Log Out (FR6)
+                      <LogOut className="w-3.5 h-3.5 text-slate-500" />
+                      <span>Log Out</span>
                     </button>
                   </div>
                 </div>
@@ -524,130 +499,93 @@ export default function AccountsPage() {
             </form>
           )}
 
-          {/* TAB 3: FORGOT PASSWORD */}
+          {/* 3. RECOVERY */}
           {tab === 'forgot' && (
             <div className="space-y-4">
-              <p className="text-sm text-slate-600">
+              <p className="text-xs text-slate-500 leading-relaxed">
                 Enter your registered email address and we will generate a secure reset link.
               </p>
 
               <form onSubmit={handleForgotPassword} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
-                    Registered Email
+                  <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                    Email Address
                   </label>
-                  <input
-                    type="email"
-                    required
-                    value={forgotEmail}
-                    onChange={(e) => setForgotEmail(e.target.value)}
-                    placeholder="name@company.com"
-                    className="mt-1 block w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] outline-none"
-                  />
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
+                    <input
+                      type="email"
+                      required
+                      value={forgotEmail}
+                      onChange={(e) => setForgotEmail(e.target.value)}
+                      placeholder="name@company.com"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
+                    />
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 px-4 bg-[#714B67] hover:bg-[#5b3c53] text-white text-sm font-semibold rounded-lg shadow"
+                  className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-xl shadow-sm transition-all"
                 >
                   {loading ? 'Generating link...' : 'Send Password Reset Link'}
                 </button>
               </form>
 
-              {/* Live Email Simulation Card */}
+              {/* Minimalist Simulation Alert */}
               {simulatedEmailLink && (
-                <div className="mt-4 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900">
-                  <div className="flex items-start space-x-2">
-                    <Mail className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800">
-                        📬 Email Dispatch Simulation (Judges Test View):
-                      </h4>
-                      <p className="text-xs mt-1 text-amber-950">
-                        A reset link was generated and dispatched to <b>{forgotEmail}</b>. Click below to simulate opening the link from the email:
-                      </p>
-                      <button
-                        onClick={() => {
-                          setTab('reset');
-                        }}
-                        className="mt-3 inline-flex items-center space-x-1 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold shadow"
-                      >
-                        <KeyRound className="w-3.5 h-3.5 mr-1" />
-                        <span>Open Reset Link (Simulated Email Click)</span>
-                      </button>
-                    </div>
-                  </div>
+                <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                  <p className="font-medium text-slate-800">
+                    A secure reset token was created for <b>{forgotEmail}</b>.
+                  </p>
+                  <button
+                    onClick={() => setTab('reset')}
+                    className="mt-2.5 inline-flex items-center space-x-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg transition-all"
+                  >
+                    <KeyRound className="w-3.5 h-3.5" />
+                    <span>Open Reset Link</span>
+                  </button>
                 </div>
               )}
             </div>
           )}
 
-          {/* TAB 4: RESET PASSWORD */}
+          {/* 4. RESET PASSWORD */}
           {tab === 'reset' && (
             <form onSubmit={handleResetPassword} className="space-y-4">
-              <div className="p-3 bg-purple-50 rounded-lg border border-purple-200 text-xs text-purple-900">
-                Resetting password with authorized security token.
-              </div>
-
               <div>
-                <label className="block text-xs font-semibold uppercase text-slate-600 tracking-wider">
-                  New Password (Policy: &gt; 8 chars, Upper, Lower, Special)
+                <label className="block text-xs font-medium text-slate-700 mb-1.5">
+                  New Password
                 </label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                    <Lock className="h-4 w-4" />
-                  </div>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-3 w-4 h-4 text-slate-400" />
                   <input
                     type="password"
                     required
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Enter strong new password"
-                    className="block w-full pl-10 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#714B67] outline-none"
+                    placeholder="Enter new password"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-200 rounded-xl placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-800 transition-all"
                   />
                 </div>
 
-                <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5">
-                  <div className="flex items-center text-xs">
-                    {resetMoreThanEight ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2" />
-                    )}
-                    <span className={resetMoreThanEight ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      More than 8 characters ({newPassword.length} chars)
-                    </span>
+                <div className="mt-3 grid grid-cols-2 gap-2 p-3 bg-slate-50/80 rounded-xl border border-slate-100 text-[11px]">
+                  <div className={`flex items-center space-x-1.5 ${resetMoreThanEight ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {resetMoreThanEight ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>&gt; 8 characters</span>
                   </div>
-                  <div className="flex items-center text-xs">
-                    {resetHasUpper ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2" />
-                    )}
-                    <span className={resetHasUpper ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      Uppercase letter
-                    </span>
+                  <div className={`flex items-center space-x-1.5 ${resetHasUpper ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {resetHasUpper ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>Uppercase letter</span>
                   </div>
-                  <div className="flex items-center text-xs">
-                    {resetHasLower ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2" />
-                    )}
-                    <span className={resetHasLower ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      Lowercase letter
-                    </span>
+                  <div className={`flex items-center space-x-1.5 ${resetHasLower ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {resetHasLower ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>Lowercase letter</span>
                   </div>
-                  <div className="flex items-center text-xs">
-                    {resetHasSpecial ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-slate-300 mr-2" />
-                    )}
-                    <span className={resetHasSpecial ? 'text-emerald-800 font-medium' : 'text-slate-500'}>
-                      Special character
-                    </span>
+                  <div className={`flex items-center space-x-1.5 ${resetHasSpecial ? 'text-emerald-700' : 'text-slate-400'}`}>
+                    {resetHasSpecial ? <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 ml-1 mr-1" />}
+                    <span>Special character</span>
                   </div>
                 </div>
               </div>
@@ -655,31 +593,13 @@ export default function AccountsPage() {
               <button
                 type="submit"
                 disabled={loading || !isResetPasswordValid}
-                className="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow disabled:opacity-50 transition-colors"
+                className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium rounded-xl shadow-sm disabled:opacity-40 transition-all"
               >
                 {loading ? 'Updating Password...' : 'Save New Password'}
               </button>
             </form>
           )}
 
-        </div>
-
-        {/* Feature 1 Acceptance Criteria Badge */}
-        <div className="mt-6 bg-slate-900 text-slate-300 rounded-xl p-4 text-xs shadow">
-          <div className="flex items-center justify-between text-white font-bold mb-2">
-            <span>Feature 1 Specification Compliance:</span>
-            <span className="bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded text-[10px]">100% Met</span>
-          </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px]">
-            <p>✓ <b>FR1/AC1:</b> Name, email, password captured</p>
-            <p>✓ <b>FR2/AC2:</b> Unique email enforcement</p>
-            <p>✓ <b>FR3/AC3:</b> &gt;8 chars, upper, lower, special</p>
-            <p>✓ <b>FR4/AC4:</b> Secure login authentication</p>
-            <p>✓ <b>FR5/AC5:</b> Credential error handling</p>
-            <p>✓ <b>FR6/AC6:</b> Secure logout & session clearing</p>
-            <p>✓ <b>FR7/AC7:</b> RBAC: Admin, Staff, Customer</p>
-            <p>✓ <b>Reset Link:</b> Tokenized email reset link</p>
-          </div>
         </div>
 
       </div>
