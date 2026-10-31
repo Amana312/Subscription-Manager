@@ -35,6 +35,9 @@ export default function HomePage() {
           <Link href="/plans" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
             <span>Task 3: Plans Engine</span><ArrowRight className="w-3.5 h-3.5 text-sage-400" />
           </Link>
+          <Link href="/subscriptions" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
+            <span>Task: Subscriptions</span><ArrowRight className="w-3.5 h-3.5 text-sage-400" />
+          </Link>
           <Link href="/quotations" className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5">
             <span>Task 4: Quotations</span><ArrowRight className="w-3.5 h-3.5 text-sage-400" />
           </Link>
