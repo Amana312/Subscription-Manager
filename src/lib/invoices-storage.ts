@@ -191,3 +191,8 @@ export function getInvoiceSummary() {
     totalRevenue: round2(totalRevenue),
   };
 }
+// DEV ONLY: replace all invoices and payments (used by the seed route)
+export function replaceAllData(invoices: Invoice[], payments: Payment[]) {
+  writeJson(INVOICES_FILE, invoices);
+  writeJson(PAYMENTS_FILE, payments);
+}
