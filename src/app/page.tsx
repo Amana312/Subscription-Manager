@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Layers, Users, Receipt, FileText } from 'lucide-react';
+import { ArrowRight, Layers, Users, Receipt, FileText, RefreshCw } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -44,7 +44,7 @@ export default function HomePage() {
         </div>
 
         {/* Feature Overview Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-8 text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-8 text-left">
           <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
             <Users className="w-5 h-5 text-sage-600 mb-2.5" />
             <h3 className="font-bold text-sage-900 text-xs">Role-Based Access</h3>
@@ -59,6 +59,11 @@ export default function HomePage() {
             <Receipt className="w-5 h-5 text-sage-600 mb-2.5" />
             <h3 className="font-bold text-sage-900 text-xs">Recurring Plans</h3>
             <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Daily, Weekly, Monthly, and Yearly cycles with pause and auto-close rules.</p>
+          </div>
+          <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
+            <RefreshCw className="w-5 h-5 text-sage-600 mb-2.5" />
+            <h3 className="font-bold text-sage-900 text-xs">Subscription Management</h3>
+            <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Create and track subscriptions, billing cycles, renewals, pauses and closures.</p>
           </div>
           <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
             <FileText className="w-5 h-5 text-sage-600 mb-2.5" />
