@@ -1,65 +1,73 @@
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Layers, Users, Receipt } from 'lucide-react';
+import { ArrowRight, Layers, Users, Receipt, Sparkles } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center px-4 py-16">
+    <div className="min-h-screen bg-cream-100 text-sage-950 flex flex-col justify-center items-center px-4 py-16 selection:bg-sage-400 selection:text-white">
       <div className="max-w-xl w-full text-center space-y-6">
         
-        {/* Brand Icon */}
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-slate-900 text-white shadow-sm mb-1">
-          <Sparkles className="w-5 h-5 text-indigo-400" />
+        {/* SubSage Official Logo */}
+        <div className="flex justify-center mb-2">
+          <img
+            src="/subsage-logo.jpg"
+            alt="SubSage"
+            className="h-14 sm:h-16 w-auto object-contain rounded-xl shadow-xs"
+          />
         </div>
 
         <div>
-          <span className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium mb-3 border border-slate-200">
+          <span className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-sage-100 text-sage-800 text-xs font-semibold mb-3 border border-sage-200">
             <span>powered by</span>
-            <span className="font-semibold text-slate-900">Brightloop</span>
+            <span className="font-bold">Brightloop Software</span>
           </span>
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 tracking-tight">
-            SubSage
-          </h1>
-          <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto mt-2 leading-relaxed">
-            Unified platform to run subscription plans, recurring billing cycles, automated invoicing, and customer accounts.
+          <p className="text-sm sm:text-base text-sage-700 max-w-md mx-auto leading-relaxed font-medium">
+            Unified subscription management, automated recurring billing cycles, catalog variants, and customer self-service portal.
           </p>
         </div>
 
-        {/* Task Links */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+        {/* Task Navigation Buttons */}
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
           <Link
             href="/accounts"
-            className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium shadow-sm transition-all space-x-2"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-sage-800 hover:bg-sage-900 text-white text-xs font-bold shadow-sm transition-all space-x-1.5"
           >
-            <span>Task 1: Accounts & Auth</span>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <span>Task 1: Accounts & RBAC</span>
+            <ArrowRight className="w-3.5 h-3.5 text-sage-300" />
           </Link>
           <Link
             href="/catalog"
-            className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-sm font-medium border border-slate-200/90 shadow-sm transition-all space-x-2"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5"
           >
             <span>Task 2: Catalog & Pricing</span>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-3.5 h-3.5 text-sage-400" />
+          </Link>
+          <Link
+            href="/plans"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white hover:bg-sage-50 text-sage-800 text-xs font-bold border border-sage-200 shadow-sm transition-all space-x-1.5"
+          >
+            <span>Task 3: Plans Engine</span>
+            <ArrowRight className="w-3.5 h-3.5 text-sage-400" />
           </Link>
         </div>
 
-        {/* Feature Cards */}
+        {/* Feature Overview Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-8 text-left">
-          <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
-            <Users className="w-4 h-4 text-slate-700 mb-2.5" />
-            <h3 className="font-semibold text-slate-900 text-xs">Role-Based Access</h3>
-            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Admin, Staff & Customer Portal with strict permission checks.</p>
+          <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
+            <Users className="w-5 h-5 text-sage-600 mb-2.5" />
+            <h3 className="font-bold text-sage-900 text-xs">Role-Based Access</h3>
+            <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Admin controls, Staff sales handling, and isolated Customer Portal.</p>
           </div>
 
-          <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
-            <Layers className="w-4 h-4 text-slate-700 mb-2.5" />
-            <h3 className="font-semibold text-slate-900 text-xs">Catalog & Modifiers</h3>
-            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Dynamic variant pricing rules (including Odoo brand +$560).</p>
+          <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
+            <Layers className="w-5 h-5 text-sage-600 mb-2.5" />
+            <h3 className="font-bold text-sage-900 text-xs">Catalog & Variants</h3>
+            <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Configurable pricing modifiers, including Odoo brand (+ $560).</p>
           </div>
 
-          <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.03)]">
-            <Receipt className="w-4 h-4 text-slate-700 mb-2.5" />
-            <h3 className="font-semibold text-slate-900 text-xs">Recurring Billing</h3>
-            <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Automated invoice generation engine and payment reconciliation.</p>
+          <div className="p-4 bg-white rounded-xl border border-sage-200 shadow-[0_2px_12px_-4px_rgba(27,61,47,0.04)]">
+            <Receipt className="w-5 h-5 text-sage-600 mb-2.5" />
+            <h3 className="font-bold text-sage-900 text-xs">Recurring Plans</h3>
+            <p className="text-[11px] text-sage-600 mt-1 leading-relaxed">Daily, Weekly, Monthly, and Yearly cycles with pause and auto-close rules.</p>
           </div>
         </div>
 

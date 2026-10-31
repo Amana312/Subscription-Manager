@@ -322,26 +322,31 @@ export default function AccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-10 px-4 sm:px-6">
+    <div className="min-h-screen bg-cream-100 flex flex-col justify-center items-center py-10 px-4 sm:px-6">
       <div className="w-full max-w-[500px]">
         
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 text-white mb-2 shadow-sm">
-            <Sparkles className="w-4 h-4 text-indigo-400" />
+          <div className="flex justify-center mb-2.5">
+            <img
+              src="/subsage-logo.jpg"
+              alt="SubSage"
+              className="h-12 w-auto object-contain rounded-lg"
+            />
           </div>
           <div>
-            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-slate-100 text-[11px] text-slate-500 font-medium border border-slate-200/80 mb-1">
+            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-sage-100 text-[11px] text-sage-850 font-semibold border border-sage-200 mb-1">
               <span>powered by</span>
-              <span className="font-semibold text-slate-800">Brightloop</span>
+              <span className="font-bold text-sage-900">Brightloop</span>
             </span>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">SubSage</h1>
-            <p className="text-xs text-slate-500 mt-0.5">Task 1 • Secure Authentication & RBAC Boundaries</p>
+            <p className="text-xs text-sage-600 font-medium mt-0.5">Task 1 • Secure Authentication & RBAC Boundaries</p>
           </div>
-          <div className="flex justify-center space-x-3 mt-2.5 text-xs">
+          <div className="flex justify-center space-x-2.5 mt-2.5 text-xs">
             <Link href="/" className="text-slate-400 hover:text-slate-700">Home</Link>
             <span className="text-slate-300">•</span>
-            <Link href="/catalog" className="text-slate-700 font-medium hover:text-slate-900">Task 2: Catalog & Variants →</Link>
+            <Link href="/catalog" className="text-slate-600 hover:text-slate-900">Task 2: Catalog</Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/plans" className="text-slate-700 font-medium hover:text-slate-900">Task 3: Plans →</Link>
           </div>
         </div>
 

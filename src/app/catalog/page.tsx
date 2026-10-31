@@ -162,17 +162,18 @@ export default function CatalogPage() {
     <div className="min-h-screen bg-slate-50/70 text-slate-900 pb-16">
       
       {/* Top Navbar */}
-      <header className="border-b border-slate-200/70 bg-white/95 backdrop-blur sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-13 flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
-              S
-            </div>
-            <div className="flex items-baseline space-x-1.5">
-              <span className="font-bold text-slate-900 text-sm tracking-tight">SubSage</span>
-              <span className="text-[10px] text-slate-400 font-medium">powered by Brightloop</span>
-            </div>
-          </div>
+      <header className="border-b border-sage-200/80 bg-white/95 backdrop-blur sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center space-x-2">
+            <img
+              src="/subsage-logo.jpg"
+              alt="SubSage"
+              className="h-8 w-auto object-contain rounded-md"
+            />
+            <span className="text-[10px] text-sage-600 font-semibold px-2 py-0.5 rounded-full bg-sage-100 border border-sage-200">
+              powered by Brightloop
+            </span>
+          </Link>
 
           <nav className="flex items-center space-x-4 text-xs font-medium">
             <Link href="/" className="text-slate-500 hover:text-slate-900 transition-colors">
@@ -183,6 +184,9 @@ export default function CatalogPage() {
             </Link>
             <Link href="/catalog" className="text-slate-900 font-semibold border-b-2 border-slate-900 pb-0.5">
               Task 2: Catalog
+            </Link>
+            <Link href="/plans" className="text-slate-500 hover:text-slate-900 transition-colors">
+              Task 3: Plans
             </Link>
           </nav>
         </div>
