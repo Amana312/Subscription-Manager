@@ -18,12 +18,19 @@ export default function HomePage() {
           Unified platform to run pricing plans, recurring subscriptions, automated invoicing, and customer billing.
         </p>
 
-        <div className="pt-2">
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             href="/accounts"
-            className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium shadow-sm transition-all space-x-2"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium shadow-sm transition-all space-x-2"
           >
-            <span>Launch Authentication Portal</span>
+            <span>Accounts & Auth</span>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+          </Link>
+          <Link
+            href="/catalog"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-800 text-sm font-medium border border-slate-200/90 shadow-sm transition-all space-x-2"
+          >
+            <span>Products & Catalog</span>
             <ArrowRight className="w-4 h-4 text-slate-400" />
           </Link>
         </div>

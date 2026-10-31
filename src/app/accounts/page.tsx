@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Check, X, ArrowRight, Mail, Lock, User, KeyRound, Sparkles, LogOut, CheckCircle2 } from 'lucide-react';
 
 export default function AccountsPage() {
@@ -211,12 +212,17 @@ export default function AccountsPage() {
       <div className="w-full max-w-[460px]">
         
         {/* Brand Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-900 text-white mb-3 shadow-sm">
             <Sparkles className="w-5 h-5 text-indigo-400" />
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Brightloop</h1>
-          <p className="text-sm text-slate-500 mt-1">Unified Subscription & Recurring Billing</p>
+          <p className="text-xs text-slate-500 mt-1">Unified Subscription & Recurring Billing</p>
+          <div className="flex justify-center space-x-3 mt-3 text-xs">
+            <Link href="/" className="text-slate-400 hover:text-slate-700">Home</Link>
+            <span className="text-slate-300">•</span>
+            <Link href="/catalog" className="text-slate-700 font-medium hover:text-slate-900">Products & Catalog →</Link>
+          </div>
         </div>
 
         {/* Card */}
