@@ -5,7 +5,15 @@ import { createUser } from '@/lib/storage';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { fullName, email, password, role } = body;
+    const { fullName, email, password, captchaAnswer, captchaExpected } = body;
+
+    // Captcha Verification
+    if (captchaAnswer === undefined || String(captchaAnswer).trim() !== String(captchaExpected)) {
+      return NextResponse.json(
+        { error: 'Security verification failed: Incorrect Captcha answer.' },
+        { status: 400 }
+      );
+    }
 
     // FR1: Must provide full name, email, and password
     if (!fullName || typeof fullName !== 'string' || !fullName.trim()) {
@@ -29,12 +37,13 @@ export async function POST(req: Request) {
       );
     }
 
-    // FR2 / AC2: Unique email check
+    // Strict Rule: Public registration always creates a CUSTOMER.
+    // Staff can ONLY be added by Admin via /api/staff (Page 2 Prompt Rule).
     const result = createUser({
       fullName,
       email,
       password,
-      role: role === 'STAFF' || role === 'ADMIN' ? role : 'CUSTOMER',
+      role: 'CUSTOMER',
     });
 
     if (!result.success) {
@@ -43,10 +52,9 @@ export async function POST(req: Request) {
 
     const { passwordHash, ...safeUser } = result.user!;
 
-    // AC1: Successful creation
     return NextResponse.json(
       {
-        message: 'Account created successfully.',
+        message: 'Customer account created successfully.',
         user: safeUser,
       },
       { status: 201 }
